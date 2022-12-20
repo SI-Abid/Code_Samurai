@@ -10,28 +10,28 @@ class Mapview extends StatefulWidget {
 }
 
 class _MapviewState extends State<Mapview> {
-  late Position coords;
+  LatLng _initialcameraposition = const LatLng(0, 0);
   @override
   void initState() {
     super.initState();
     Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     ).then((value) => setState(() {
-          coords = value;
+          _initialcameraposition = LatLng(value.latitude, value.longitude);
         })
     );
   }
   @override
   Widget build(BuildContext context) {
     final CameraPosition initialCameraPosition = CameraPosition(
-      target: LatLng(coords.latitude, coords.longitude),
+      target: LatLng(_initialcameraposition.latitude, _initialcameraposition.longitude),
       zoom: 14.4746,
     );
     return GoogleMap(initialCameraPosition: initialCameraPosition,
     markers: {
       Marker(
         markerId: const MarkerId('currentLocation'),
-        position: LatLng(coords.latitude, coords.longitude),
+        position: LatLng(_initialcameraposition.latitude, _initialcameraposition.longitude),
       ),
     },
     );

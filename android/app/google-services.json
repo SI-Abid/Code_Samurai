@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "864358772610",
+    "project_id": "pracathon",
+    "storage_bucket": "pracathon.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864358772610:android:c199b86876f401b362299b",
+        "android_client_info": {
+          "package_name": "com.example.code_samurai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864358772610-0uhldaid7fh08j0uoju8v19erb0c4i7b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI3oFLUfefozzEstfyTZd0lnVsdcO2l8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864358772610-0uhldaid7fh08j0uoju8v19erb0c4i7b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864358772610:android:218a7d74814e05ad62299b",
+        "android_client_info": {
+          "package_name": "com.example.pracathon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864358772610-0uhldaid7fh08j0uoju8v19erb0c4i7b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI3oFLUfefozzEstfyTZd0lnVsdcO2l8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864358772610-0uhldaid7fh08j0uoju8v19erb0c4i7b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

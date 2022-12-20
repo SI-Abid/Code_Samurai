@@ -10,30 +10,35 @@ class Mapview extends StatefulWidget {
 }
 
 class _MapviewState extends State<Mapview> {
-  LatLng _initialcameraposition = const LatLng(0, 0);
-  @override
-  void initState() {
-    super.initState();
-    Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    ).then((value) => setState(() {
-          _initialcameraposition = LatLng(value.latitude, value.longitude);
-        })
-    );
+  Future<Position> determinePostion() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        return Future.error('Location permissions are permantly denied, we cannot request permissions.');
+      }
+    }
+    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
   }
+
   @override
   Widget build(BuildContext context) {
-    final CameraPosition initialCameraPosition = CameraPosition(
-      target: LatLng(_initialcameraposition.latitude, _initialcameraposition.longitude),
-      zoom: 14.4746,
-    );
-    return GoogleMap(initialCameraPosition: initialCameraPosition,
-    markers: {
-      Marker(
-        markerId: const MarkerId('currentLocation'),
-        position: LatLng(_initialcameraposition.latitude, _initialcameraposition.longitude),
-      ),
-    },
+    return FutureBuilder<Position>(
+      future: determinePostion(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: LatLng(snapshot.data!.latitude, snapshot.data!.longitude),
+              zoom: 14.4746,
+            ),
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 }

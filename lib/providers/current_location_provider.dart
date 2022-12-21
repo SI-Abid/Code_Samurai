@@ -7,8 +7,11 @@ import 'package:location/location.dart';
 final currentLocationProvider = ChangeNotifierProvider((ref) => CurrentLocationProvider());
 
 class CurrentLocationProvider extends ChangeNotifier {
-  LocationData? _currentLocation;
-  LocationData? get currentLocation => _currentLocation;
+  LocationData _currentLocation = LocationData.fromMap({
+    'latitude': 23.72960,
+    'longitude': 90.39904,
+  });
+  LocationData get currentLocation => _currentLocation;
 
   Future<void> getCurrentLocation() async {
     final location = Location();
@@ -19,7 +22,6 @@ class CurrentLocationProvider extends ChangeNotifier {
       if (e.code == 'PERMISSION_DENIED') {
         debugPrint('Permission denied');
       }
-      _currentLocation = null;
     }
   }
 }

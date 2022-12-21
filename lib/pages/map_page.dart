@@ -1,4 +1,5 @@
 import 'package:code_samurai/models/project.dart';
+import 'package:code_samurai/pages/project_info.dart';
 import 'package:code_samurai/services/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +27,10 @@ class _MapviewState extends State<Mapview> {
             title: project.name,
             snippet: '${project.completion.toString()}% completed',
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ProjectDetails(project: project)));
+              // stack map page on top of project info page
+              showModalBottomSheet(context: context, builder: (context) {
+                return ProjectInfo(project: project);
+              });
             },
           ),
         ),
@@ -41,12 +45,14 @@ class _MapviewState extends State<Mapview> {
       future: getMarkers(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Consumer(builder: (context, ref, child) {
-            final currentLocation = ref.watch(currentLocationProvider).currentLocation;
+          return Consumer(builder: (_, ref, __) {
+            final currentLocation =
+                ref.watch(currentLocationProvider).currentLocation;
             return GoogleMap(
               initialCameraPosition: CameraPosition(
-                target: LatLng(currentLocation!.latitude!, currentLocation.longitude!),
-                zoom: 14.4746,
+                target: LatLng(currentLocation.latitude ?? 0,
+                    currentLocation.longitude ?? 0),
+                zoom: 16,
               ),
               markers: Set.from(snapshot.data!),
             );
@@ -57,24 +63,6 @@ class _MapviewState extends State<Mapview> {
           );
         }
       },
-    );
-  }
-}
-
-class ProjectDetails extends StatelessWidget {
-  const ProjectDetails({Key? key, required this.project}) : super(key: key);
-
-  final Project project;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(project.name),
-      ),
-      body: Center(
-        child: Text(project.goal),
-      ),
     );
   }
 }

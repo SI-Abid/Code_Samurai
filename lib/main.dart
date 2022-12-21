@@ -18,9 +18,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.grey,
+      ),
       debugShowCheckedModeBanner: false,
-      home: SafeArea(
+      home: const SafeArea(
         child: Scaffold(
           body: Center(
             child: Mapview(),

@@ -1,4 +1,5 @@
 class Project {
+  String projectId;
   String name;
   String location;
   double latitude;
@@ -12,6 +13,7 @@ class Project {
   double completion;
 
   Project({
+    required this.projectId,
     required this.name,
     required this.location,
     required this.latitude,
@@ -27,6 +29,7 @@ class Project {
 
   factory Project.fromJson(Map<String, dynamic> json) {
     return Project(
+      projectId: json['projectId'],
       name: json['name'],
       location: json['location'],
       latitude: double.parse(json['latitude']),

@@ -1,8 +1,7 @@
-import 'dart:ui';
-
 import 'package:code_samurai/models/project.dart';
 import 'package:code_samurai/services/helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ProjectInfo extends StatelessWidget {
   final Project project;
@@ -13,9 +12,11 @@ class ProjectInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -63,27 +64,36 @@ class ProjectInfo extends StatelessWidget {
               // bottom aligned
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  project.actualCost.toString(),
-                  style: const TextStyle(
-                    fontSize: 34,
-                    fontWeight: FontWeight.bold,
+                Flexible(
+                  flex: 1,
+                  child: Text(
+                    project.actualCost.toString(),
+                    style: const TextStyle(
+                      fontSize: 34,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                Text(
-                  'cr/${project.cost.toString()}cr',
-                  style: const TextStyle(
-                    fontSize: 16,
+                Flexible(
+                  flex: 1,
+                  child: Text(
+                    'cr/${project.cost.toString()}cr',
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
                   ),
                 ),
                 // 5 star rating system
-                const SizedBox(width: 110),
-                Row(
-                  children: List.generate(
-                    5,
-                    (index) => Icon(
-                      Icons.star,
-                      color: index < 4 ? Colors.orange : Colors.grey,
+                Flexible(
+                  flex: 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: List.generate(
+                      5,
+                      (index) => Icon(
+                        Icons.star,
+                        color: index < project.rating ? Colors.orange : Colors.grey,
+                      ),
                     ),
                   ),
                 ),
@@ -140,16 +150,15 @@ class FeedbackPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              5,
-              (index) => Icon(
-                Icons.star,
-                color: index < 4 ? Colors.orange : Colors.grey,
-              ),
-            ),
-          ),
+          RatingBar.builder(itemBuilder: (context, index) {
+            return const Icon(
+              Icons.star,
+              color: Colors.orange,
+            );
+          }, onRatingUpdate: (rating) {
+            // update rating
+            Helper.updateRating(project, rating);
+          }),
           const SizedBox(height: 20),
           const Text(
             'Write a review',
@@ -181,7 +190,8 @@ class FeedbackPage extends StatelessWidget {
             ),
             onPressed: () {
               // submit feedback
-              Helper.addFeedback(project.projectId, controller.text);
+              Helper.addFeedback(project.projectId, controller.text, project.rating);
+              
               Navigator.pop(context);
             },
             child: const Text('Submit'),

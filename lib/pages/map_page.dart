@@ -30,7 +30,13 @@ class _MapviewState extends State<Mapview> {
               // stack map page on top of project info page
               showModalBottomSheet(context: context, builder: (context) {
                 return ProjectInfo(project: project);
-              });
+              },
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
+              ),
+              );
             },
           ),
         ),

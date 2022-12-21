@@ -11,6 +11,7 @@ class Project {
   double timespan;
   String goal;
   double completion;
+  double rating;
 
   Project({
     required this.projectId,
@@ -25,6 +26,7 @@ class Project {
     required this.timespan,
     required this.goal,
     required this.completion,
+    this.rating = 0,
   });
 
   factory Project.fromJson(Map<String, dynamic> json) {
@@ -41,6 +43,7 @@ class Project {
       timespan: double.parse(json['timespan']),
       goal: json['goal'],
       completion: double.parse(json['completion']),
+      rating: double.parse(json['rating']??'0'),
     );
   }
 }

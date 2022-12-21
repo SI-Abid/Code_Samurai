@@ -1,5 +1,5 @@
+import 'package:code_samurai/services/helper.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Mapview extends StatefulWidget {
@@ -10,28 +10,50 @@ class Mapview extends StatefulWidget {
 }
 
 class _MapviewState extends State<Mapview> {
-  Future<Position> determinePostion() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.deniedForever) {
-        return Future.error('Location permissions are permantly denied, we cannot request permissions.');
-      }
+  Future<List<Marker>> getMarkers() async {
+    final projectList = await Helper.getProjectsList();
+    final markers = <Marker>[];
+    for (var project in projectList) {
+      markers.add(
+        Marker(
+          markerId: MarkerId(project.name),
+          position: LatLng(project.latitude, project.longitude),
+          infoWindow: InfoWindow(
+            title: project.name,
+            snippet: '${project.completion.toString()}% completed',
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => Scaffold(
+                    appBar: AppBar(
+                      title: Text(project.name),
+                    ),
+                    body: Center(
+                      child: Text(project.location),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      );
     }
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return markers;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Position>(
-      future: determinePostion(),
+    return FutureBuilder<List<Marker>>(
+      future: getMarkers(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return GoogleMap(
             initialCameraPosition: CameraPosition(
-              target: LatLng(snapshot.data!.latitude, snapshot.data!.longitude),
+              target: snapshot.data![0].position,
               zoom: 14.4746,
             ),
+            markers: Set<Marker>.from(snapshot.data!),
           );
         } else {
           return const Center(

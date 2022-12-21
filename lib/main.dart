@@ -1,3 +1,4 @@
+import 'package:code_samurai/pages/homepage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:code_samurai/pages/map_page.dart';
@@ -17,9 +18,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Center(
-          child: Mapview(),
+          child: HomePage(),
         ),
       ),
     );
